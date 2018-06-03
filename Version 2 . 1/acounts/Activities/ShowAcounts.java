@@ -46,15 +46,15 @@ public class ShowAcounts extends JFrame implements ActionListener,FocusListener{
     }
       
     private void GetAcounts(){
-        Acount acount=new Acount();
+        Acount acount = new Acount();
         try{
-            File file=new File( Const.File_Path() );
+            File file = new File( Const.File_Path() );
             try (Scanner output = new Scanner( file )) {
-                int count=1;
+                int count = 1;
                 
                 while(output.hasNext()){
                     
-                    String Get=output.nextLine();
+                    String Get = output.nextLine();
                     switch ( count%5 ) {
                         case 1:
                             acount.Site=Const.GetDataDecoding( Get.substring(6) ,"From ShowAcounts In Line 60" );
@@ -217,14 +217,15 @@ public class ShowAcounts extends JFrame implements ActionListener,FocusListener{
         Backword.setToolTipText("Previos");
         
         ID=new JLabel();
-        ID.setText("0");
+        ID.setText("Acount   0");
         ID.setBackground(Color.BLACK);
+        ID.setForeground(Color.WHITE);
         
         Location = new JLabel();
         Location.setText("");
         
         Type = new JLabel();
-        Type.setText("<html><br>Type<html>");
+        Type.setText("<html><br>Type : -<html>");
         Type.setForeground(Color.WHITE);
         
         Acount = new JLabel();
@@ -350,30 +351,37 @@ public class ShowAcounts extends JFrame implements ActionListener,FocusListener{
     }
     private void RemoveAction() {
         
-        if ( !Acounts.isEmpty() ){
-            if ( JOptionPane.showConfirmDialog( null, "Remove This Acount ???" )==0 ){
-                Acounts.remove(Order);
-                if (Order-1>-1){
-                    Order--;
-                    if ( Save() ){
-                        Result.setText("Operation Remove Completed");
-                        SetData();
-                    }
-                }
-                else if ( !Acounts.isEmpty() ){
-                    if ( Save() ){
-                        Result.setText("Operation Remove Completed");
-                        SetData();
-                    }
-                }
-                else{
-                    Location.setText( "" );
-                    Acount.setText( "Handel : - " );
-                    ShowAcount.setText("NO Acount is Saved");
-                    Password.setText( "Password : -" );
-                    ShowPassword.setText("NO Acount is Saved");
-                    Type.setText( "<html>Type<p>No Acounts is Saved<html>" );
-                }
+        if ( Acounts.isEmpty() )
+            return ;
+        
+        if ( JOptionPane.showConfirmDialog( null, "Remove This Acount ???" )!=0 )
+            return ;
+            
+        Acounts.remove(Order);
+        if (Order-1>-1){
+            Order--;
+            if ( Save() ){
+                Result.setText("Operation Remove Completed");
+                SetData();
+            }
+        }
+        else if ( !Acounts.isEmpty() ){
+            if ( Save() ){
+                Result.setText("Operation Remove Completed");
+                SetData();
+            }
+        }
+        else{
+            if ( Save() ){
+                Result.setText("Operation Remove Completed");
+
+                ID.setText("Acount   0");
+                Location.setText( "" );
+                Acount.setText( "Handel : - " );
+                ShowAcount.setText("");
+                Password.setText( "Password : -" );
+                ShowPassword.setText("");
+                Type.setText( "Type : -" );
             }
         }
     }
@@ -382,13 +390,13 @@ public class ShowAcounts extends JFrame implements ActionListener,FocusListener{
             File file=new File( Const.File_Path() );
             file.delete();
             file.createNewFile();
-
+            
             for (int i=0;i<Acounts.size();i++)
-                Const.Save( Acounts.get(i) ,"From ShowAcounts In Line 387" );
+                Const.Save( Acounts.get(i) ,"From ShowAcounts In Line 395" );
             return true;
         }
         catch( Exception E ){
-            Const.GetOut( "From ShowAcounts In Line 391" );
+            Const.GetOut( "From ShowAcounts In Line 399" );
         }
         return false;
     }
